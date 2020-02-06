@@ -21,12 +21,7 @@ app_header = {
     'X-Requested-With': 'XMLHttpRequest'
 }
 
-app_param = {
-    'type': 'uid',
-    'value': 5745966493,
-    'containerid': '1076035745966493',
-    'since_id': '4465339964799573'
-}
+
 
 # res = requests.get(url=app_url, headers=app_header, params=app_param).json()
 # print(res)
