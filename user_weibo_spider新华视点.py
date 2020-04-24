@@ -16,7 +16,7 @@ etree = html.etree
 
 proxy = {}
 # '4490719299787262'
-since_id = 4458441189777880
+since_id = 4458856338423160
 
 
 # @retry(stop_max_attempt_number=3, wait_random_min=1000, wait_random_max=5000)
@@ -62,8 +62,8 @@ def spider():
     app_param = {
         # 'uid': 2803301701,
         'type': 'uid',
-        'value': '2803301701',
-        'containerid': '1076032803301701',
+        'value': '6004281123',
+        'containerid': '1076036004281123',
         'since_id': since_id
     }
 
@@ -102,6 +102,10 @@ def spider():
             attitudes_count = card['mblog']['attitudes_count']  # 点赞数
             app_detail_url = 'https://m.weibo.cn/statuses/extend?id=' + str(wb_id)
 
+            html = card['mblog']['text']
+            root = etree.HTML(html)
+            content = root.xpath("string(//*)")  # 微博内容
+
             pics_url = ''
             if card['mblog']['pic_num'] != 0:
                 try:
@@ -117,6 +121,7 @@ def spider():
             except KeyError:
                 video_url = ''
 
+            # 转发内容
             retweeted_status = '否'
             retweeted_url = ''
             retweeted_content = ''
@@ -130,8 +135,8 @@ def spider():
                         return
                     try:
                         re_detail_ret = requests.get(url=retweeted_url, headers=app_header, proxies=proxy).json()
-                        print(f're_detail_ret{re_detail_ret}')
-                        time.sleep(random.uniform(0.3, 1.2))
+                        print(f'########################re_detail_ret{re_detail_ret}')
+                        time.sleep(random.uniform(0.3, 0.8))
                         return re_detail_ret
                     except:
                         change_proxy(3)
@@ -148,28 +153,28 @@ def spider():
                     root = etree.HTML(html)
                     retweeted_content = root.xpath("string(//*)")
 
-            def get_detail_ret(c):
-                if c < 0:
-                    return
-                try:
-                    detail_ret = requests.get(url=app_detail_url, headers=app_header, proxies=proxy).json()
-                    print(detail_ret)
-                    time.sleep(random.uniform(0.3, 1.2))
-                    return detail_ret
-                except:
-                    change_proxy(3)
-                    return get_ret(c - 1)
+            if '全文' in content:
+                # 微博详情页
+                def get_detail_ret(c):
+                    if c < 0:
+                        return
+                    try:
+                        detail_ret = requests.get(url=app_detail_url, headers=app_header, proxies=proxy).json()
+                        print(detail_ret)
+                        time.sleep(random.uniform(0.3, 0.6))
+                        return detail_ret
+                    except:
+                        change_proxy(3)
+                        return get_ret(c - 1)
 
-            re_detail_ret = get_detail_ret(2)
-            try:
-                html = re_detail_ret['data']['longTextContent']  # 正文
-                root = etree.HTML(html)
-                content = root.xpath("string(//*)")
-            except:
-                print(f'获取微博详情失败，详情内容为detail_ret{re_detail_ret}')
-                html = card['mblog']['text']
-                root = etree.HTML(html)
-                content = root.xpath("string(//*)")
+                detail_ret = get_detail_ret(2)
+                try:
+                    html = detail_ret['data']['longTextContent']  # 正文
+                    root = etree.HTML(html)
+                    content = root.xpath("string(//*)")
+                except:
+                    print(f'获取微博详情失败，详情内容为detail_ret{detail_ret}')
+
 
             topic_num = int(content.count('#') / 2)  # 话题数
             p = re.compile(r'[#](.*?)[#]', re.S)
@@ -190,5 +195,5 @@ if __name__ == '__main__':
     change_proxy(1)
     while True:
         data = spider()
-        save_data('人民日报1.csv', data)
+        save_data('梨视频.csv', data)
         print("########################存储成功########################")
