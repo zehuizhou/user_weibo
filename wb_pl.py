@@ -18,10 +18,10 @@ proxy = {}
 
 etree = html.etree
 
-cname = '《4479955663030577》的评论副本'
+cname = '《素走世界》微博评论'
 
 # 过期了就换一下
-cookie = '_ga=GA1.2.852180565.1582702609; WEIBOCN_FROM=1110005030; _T_WM=73519821653; ALF=1586308619; SCF=AqURd7rrLbKR6K42oMeW_I-_GcEWkVQLrLN_HSe9iIZfUsVOrflQB4eFrtAhNspiwKJHx8EXqF-uDOnLqnEQtig.; SUB=_2A25zYel-DeRhGeVI7lER9CvFyD6IHXVQrfc2rDV6PUJbktANLXX_kW1NTAX_rGkuK78glzLSIQht7FXCwWHPpSOm; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWES-MGSxVJk.S7AzfIp_iT5JpX5K-hUgL.FoecSKe7Sh-4e0z2dJLoIEXLxKBLBonL1h5LxKqL1-BLB-qLxKqLBo5L1KBLxKnLBoBLBKnLxKqLBo5LBoBt; SUHB=0vJ4bSJonIRdGO; SSOLoginState=1583716654; MLOGIN=1; XSRF-TOKEN=7b69c4; M_WEIBOCN_PARAMS=oid%3D4479955663030577%26luicode%3D20000061%26lfid%3D4479955663030577%26uicode%3D20000061%26fid%3D4479955663030577'
+cookie = 'ALF=1590628107; _T_WM=98632022946; WEIBOCN_FROM=1110003030; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWES-MGSxVJk.S7AzfIp_iT5JpX5K-hUgL.FoecSKe7Sh-4e0z2dJLoIEXLxKBLBonL1h5LxKqL1-BLB-qLxKqLBo5L1KBLxKnLBoBLBKnLxKqLBo5LBoBt; MLOGIN=1; SCF=ApTuVIRec5rnYko_9HmLKx8JM1Qd-n8MCEh-QuP9AgxCDxhUHwcdJEs34jAzvqqOHz7QelxMclJY58Yi0KDNALU.; SUB=_2A25zo_KpDeRhGeVI7lER9CvFyD6IHXVRb57hrDV6PUJbktANLRfgkW1NTAX_rCJ1jtpbkHpCEh_LY3fD_FwZIOEl; SUHB=0vJ4bSJonIhYtp; SSOLoginState=1588036345; M_WEIBOCN_PARAMS=fid%3D1076031265357020%26uicode%3D10000011; XSRF-TOKEN=37c1b4'
 
 header = {
     'x-requested-with': 'XMLHttpRequest',
@@ -176,12 +176,12 @@ if __name__ == '__main__':
     4466929533834665
     4466986551438138
     """
-    # change_proxy(1)
+    change_proxy(1)
 
-    # with open('1.txt', 'r') as f:
-    #     content = f.read().splitlines()
-    #     wei_id_list = content
-    wei_id_list = ['4479955663030577']
+    with open('ids', 'r') as f:
+        content = f.read().splitlines()
+        wei_id_list = content
+
     for wei_id in wei_id_list:
-        spider(wei_id)
+        spider(wei_id[-16:])
         print(f'微博{wei_id}保存成功~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
